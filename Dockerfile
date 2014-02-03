@@ -1,8 +1,8 @@
 # Ruby (https://www.ruby-lang.org/en/)
 
-FROM ubuntu:precise
+FROM ubuntu:saucy
 MAINTAINER Ryan Seto <ryanseto@yak.net>
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list && \
+RUN echo "deb http://archive.ubuntu.com/ubuntu saucy main universe" > /etc/apt/sources.list && \
         apt-get update && \
         apt-get upgrade
 
