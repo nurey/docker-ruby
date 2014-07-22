@@ -13,13 +13,35 @@ ENV LANG       en_US.UTF-8
 ENV LC_ALL     en_US.UTF-8
 
 # Install packages required for rvm
-RUN apt-get -y install sudo software-properties-common \
+RUN apt-get -y install sudo software-properties-common unzip \
       python-software-properties wget openssl libreadline6 \
       libreadline6-dev curl git zlib1g zlib1g-dev libyaml-dev \
       libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev \
       ncurses-dev automake libtool bison subversion zlib1g-dev \
       build-essential libreadline-dev libsqlite3-dev libxml2-dev libxslt1-dev \
-      gawk openjdk-7-jre-headless libssl-dev libgdbm-dev pkg-config libffi-dev 
+      gawk openjdk-7-jre-headless libssl-dev libgdbm-dev pkg-config libffi-dev \
+      ca-certificates 
+
+# Install Oracle Java 8
+RUN cd /tmp \
+    && wget -O jdk8.tar.gz \
+       --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+       http://download.oracle.com/otn-pub/java/jdk/8u11-b12/jdk-8u11-linux-x64.tar.gz \
+    && tar xzf jdk8.tar.gz -C /opt \
+    && mv /opt/jdk* /opt/java \
+    && rm /tmp/jdk8.tar.gz \
+    && update-alternatives --install /usr/bin/java java /opt/java/bin/java 2000 \
+    && update-alternatives --install /usr/bin/javac javac /opt/java/bin/javac 2000
+
+# Install Java Cryptography Extension Unlimited Strength Policy files
+RUN cd /tmp \
+    && wget \
+       --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+       http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
+    && unzip jce_policy-8.zip \
+    && mv UnlimitedJCEPolicyJDK8/*.jar /opt/java/jre/lib/security/
+
+ENV JAVA_HOME /opt/java
 
 # Install nodejs and npm
 RUN add-apt-repository ppa:chris-lea/node.js && \
