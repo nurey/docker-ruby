@@ -58,6 +58,11 @@ RUN su ilia -c "curl -sSL https://get.rvm.io | bash"
 #RUN echo "source /usr/local/rvm/scripts/rvm" >> /etc/profile
 #RUN /bin/bash -l -c "rvm requirements"
 
+# Install ca certificates
+RUN su ilia -c "wget -O /ilia/cacert.pem http://curl.haxx.se/ca/cacert.pem"
+RUN su ilia -c echo "export CA_CERT_FILE=/ilia/cacert.pem" >> /ilia/.bash_profile
+ENV CA_CERT_FILE /ilia/cacert.pem
+
 # Install ruby
 RUN su - ilia -c "rvm install ruby-2.1.2"
 
