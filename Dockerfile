@@ -26,7 +26,7 @@ RUN apt-get -y install sudo software-properties-common unzip \
 RUN cd /tmp \
     && wget -O jdk8.tar.gz \
        --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-       http://download.oracle.com/otn-pub/java/jdk/8u11-b12/jdk-8u11-linux-x64.tar.gz \
+       http://download.oracle.com/otn-pub/java/jdk/8u20-b26/jdk-8u20-linux-x64.tar.gz \
     && tar xzf jdk8.tar.gz -C /opt \
     && mv /opt/jdk* /opt/java \
     && rm /tmp/jdk8.tar.gz \
@@ -64,13 +64,13 @@ RUN echo "export SSL_CERT_FILE=/ilia/cacert.pem" >> /ilia/.bash_profile
 ENV SSL_CERT_FILE /ilia/cacert.pem
 
 # Install ruby
-RUN su - ilia -c "rvm install ruby-2.1.2"
+RUN su - ilia -c "rvm install ruby-2.1.3"
 
 # Install jruby
-RUN su - ilia -c "rvm install jruby-1.7.13"
+RUN su - ilia -c "rvm install jruby-1.7.15"
 
 # Use jruby
-RUN su - ilia -c "rvm use jruby --default"
+RUN su - ilia -c "rvm use jruby-1.7.15 --default"
 
 # Install bundler
 RUN su - ilia -c "gem install bundler"
